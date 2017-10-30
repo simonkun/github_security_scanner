@@ -19,7 +19,7 @@ You will then be prompted for your username and password - enter these and the s
 
 There is some in built help if you need it!
 
-### Prerequisites
+## Prerequisites
 
 In order to run this you need Python (Version 3.6 recommended) and you will need the Requests library (Version 2.18.4 recommended) Get these from here:
 
@@ -30,7 +30,7 @@ Python is available from https://www.python.org/
 The Python Requests library is available from http://docs.python-requests.org/en/master/
 ```
 
-### Improvements/Extensions/TODO
+## Improvements/Extensions/TODO
 
 Still a bunch more can be done!
 * Certificate authentication - make sure we are connecting to the legit GitHub
@@ -40,19 +40,6 @@ Still a bunch more can be done!
 * Look at webhooks
 * Look at new users - maybe local database?
 * Be efficent with users already quarantined (currently we remove and re-add)
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
 
 ## Authors
 
