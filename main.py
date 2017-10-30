@@ -27,18 +27,27 @@ def quarantine(organisation, bad_user):
         target_name = record['name']
         # check is user is in the team
         req_ismember = requests.get('https://api.github.com/teams/' + str(target_id) + '/memberships/' + bad_user + '', auth=(user, password))
-
+        logging.debug(req_ismember.status_code)
         # if user is in team then remove
         if req_ismember.status_code == 200: #200 means yes
             logging.info(bad_user + ' is a member of ' + target_name + ' team')
             req_delete = requests.delete('https://api.github.com/teams/' + str(target_id) + '/members/' + bad_user, auth=(user, password))
-            if req_delete.status_code ==204: #204 means yes
+            if req_delete.status_code == 204: #204 means yes
                 logging.info(bad_user + ' Successfully removed from ' + target_name)
+            else:
+                logging.error('Failed to remove user')
+        elif req_ismember.status_code == 404:
+            logging.warning(bad_user + ' is not a member of the ' + target_name +
+            ' team')
+        else:
+            logging.error('request for team membershps failed')
 
     # finally add the user to the quaratine team
     req_quaratine = requests.put('https://api.github.com/teams/' + str(target_id) + '/members/' + bad_user, auth=(user, password))
-    if req_quaratine.status_code ==204: #204 means yes
+    if req_quaratine.status_code == 204: #204 means yes
         logging.info(bad_user + ' added to quarantine')
+    else:
+        logging.error(bad_user + ' failed to add to qurantine')
     return;
 
 # check is users have 2FA configured. if they don't then banish them to the
@@ -60,6 +69,8 @@ def two_factor(organisation):
             target_name = record['login']
             logging.info(target_name + ' does not have 2FA enabled')
             quarantine(organisation, target_name)
+    else:
+        logging.error('failed to get list of users not using 2FA')
     return;
 
 def bad_commits(organisation):
